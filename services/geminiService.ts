@@ -9,11 +9,11 @@ const getErrorMessage = (error: unknown): string => {
     message = error;
   }
 
-  if (message.includes('UNAUTHENTICATED') || message.includes('invalid authentication credentials') || message.includes('API key not valid')) {
-    return "Authentication failed. Please ensure your API key is correctly configured and valid.";
+  if (message.includes('API Key must be set') || message.includes('UNAUTHENTICATED') || message.includes('API key not valid')) {
+    return "Google AI Studio is not connected. Please click the 'Connect AI Studio' button in the top right corner to get started.";
   }
   if (message.includes('429')) {
-    return "The service is currently busy. Please try again in a moment.";
+    return "The service is currently busy (Rate Limit). Please try again in a moment.";
   }
 
   try {
@@ -77,6 +77,10 @@ Your task is to replace the background of a provided product image. The product 
 };
 
 export const processImageWithGemini = async (file: File, options: CustomizationOptions, niche: string, atmosphereFiles: File[], logoFile: File | null): Promise<string> => {
+  if (!process.env.API_KEY) {
+     throw new Error("API Key must be set");
+  }
+
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const prompt = buildPrompt(options, niche, atmosphereFiles.length > 0, !!logoFile);
@@ -109,6 +113,8 @@ export const processImageWithGemini = async (file: File, options: CustomizationO
 };
 
 export const upscaleImageWithGemini = async (file: File): Promise<string> => {
+    if (!process.env.API_KEY) throw new Error("API Key must be set");
+
     try {
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const imagePart = await fileToGenerativePart(file);
@@ -123,6 +129,8 @@ export const upscaleImageWithGemini = async (file: File): Promise<string> => {
 };
 
 export const correctColorWithGemini = async (file: File): Promise<string> => {
+    if (!process.env.API_KEY) throw new Error("API Key must be set");
+
     try {
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const imagePart = await fileToGenerativePart(file);
@@ -137,6 +145,8 @@ export const correctColorWithGemini = async (file: File): Promise<string> => {
 }
 
 export const regenerateBackgroundPrompts = async (niche: string): Promise<string[]> => {
+  if (!process.env.API_KEY) throw new Error("API Key must be set");
+
   try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
@@ -155,6 +165,8 @@ export const generateVideoWithGemini = async (
   duration: number,
   onProgress: (message: string) => void
 ): Promise<string> => {
+  if (!process.env.API_KEY) throw new Error("API Key must be set");
+
   try {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
