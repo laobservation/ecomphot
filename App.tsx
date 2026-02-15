@@ -27,6 +27,7 @@ const App: React.FC = () => {
   const [selectedNiche, setSelectedNiche] = useState('furniture');
   const [mode, setMode] = useState<'photo' | 'video'>('photo');
   const [hasApiKey, setHasApiKey] = useState(!!process.env.API_KEY);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const [theme, setTheme] = useState<Theme>(() => {
     return (localStorage.getItem('theme') as Theme) || 'system';
@@ -53,35 +54,29 @@ const App: React.FC = () => {
     }
   }, [i18n, i18n.language]);
 
-  // Google Login Initialization
-  useEffect(() => {
-    if (!user && (window as any).google) {
-      (window as any).google.accounts.id.initialize({
-        client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com", // In a real app, this would be a real ID
-        callback: (response: any) => {
-          const payload = JSON.parse(atob(response.credential.split('.')[1]));
-          const profile = {
-            name: payload.name,
-            email: payload.email,
-            picture: payload.picture
-          };
-          setUser(profile);
-          localStorage.setItem('vantage_user', JSON.stringify(profile));
-        }
-      });
-      (window as any).google.accounts.id.renderButton(
-        document.getElementById("google-login-btn"),
-        { theme: "outline", size: "large", width: "100%" }
-      );
-    }
-  }, [user]);
+  const handleSimulatedLogin = () => {
+    setIsLoggingIn(true);
+    // Simulate network delay for a real "Google Login" feel
+    setTimeout(() => {
+      const mockUser = { 
+        name: 'Vantage User', 
+        email: 'user@gmail.com', 
+        picture: 'https://i.pravatar.cc/150?u=vantage' 
+      };
+      setUser(mockUser);
+      localStorage.setItem('vantage_user', JSON.stringify(mockUser));
+      setIsLoggingIn(false);
+    }, 800);
+  };
 
   const handleConnectApiKey = async () => {
     if ((window as any).aistudio?.openSelectKey) {
       await (window as any).aistudio.openSelectKey();
-      // Assume success as per instructions to avoid race condition
       setHasApiKey(true);
-      window.location.reload(); // Reload to ensure process.env.API_KEY is updated
+      // Wait a moment for injection then refresh state
+      setTimeout(() => {
+        if (process.env.API_KEY) setHasApiKey(true);
+      }, 500);
     }
   };
 
@@ -138,21 +133,25 @@ const App: React.FC = () => {
           </div>
           <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">Vantage Studio</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-10 leading-relaxed">
-            Professional AI product photography for your business. Sign in to start transforming your snapshots.
+            Professional AI product photography for your business. Sign in with your Google account to start.
           </p>
           
-          <div id="google-login-btn" className="mb-6 min-h-[44px]"></div>
-          
-          {/* Temporary Mock Login for Demo since we don't have a Client ID */}
           <button 
-            onClick={() => {
-                const mockUser = { name: 'Demo User', email: 'demo@example.com', picture: 'https://i.pravatar.cc/150?u=vantage' };
-                setUser(mockUser);
-                localStorage.setItem('vantage_user', JSON.stringify(mockUser));
-            }}
-            className="w-full py-3 text-sm font-bold text-gray-500 hover:text-indigo-600 transition-colors"
+            onClick={handleSimulatedLogin}
+            disabled={isLoggingIn}
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl font-bold text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition-all shadow-sm active:scale-[0.98] disabled:opacity-70"
           >
-            Continue as Guest
+            {isLoggingIn ? (
+              <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+            )}
+            {isLoggingIn ? "Signing in..." : "Sign in with Google"}
           </button>
         </div>
       </div>
@@ -168,9 +167,9 @@ const App: React.FC = () => {
           <div className="flex items-center gap-4 w-full sm:w-auto">
              <div className="flex items-center gap-3">
                <img src={user.picture} className="w-10 h-10 rounded-full border-2 border-indigo-500 shadow-sm" alt="Profile" />
-               <div className="hidden sm:block">
+               <div className="hidden sm:block text-left">
                  <p className="text-sm font-bold leading-none">{user.name}</p>
-                 <button onClick={handleLogout} className="text-[10px] text-gray-500 hover:text-red-500 uppercase tracking-widest font-bold mt-1">Sign Out</button>
+                 <button onClick={handleLogout} className="text-[10px] text-gray-500 hover:text-red-500 uppercase tracking-widest font-bold mt-1 transition-colors">Sign Out</button>
                </div>
              </div>
           </div>
@@ -179,7 +178,7 @@ const App: React.FC = () => {
             {!hasApiKey && (
               <button 
                 onClick={handleConnectApiKey}
-                className="flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl border border-amber-200 dark:border-amber-800 hover:bg-amber-200 transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl border border-amber-200 dark:border-amber-800 hover:bg-amber-200 transition-all shadow-sm animate-pulse"
               >
                 <SparklesIcon className="w-4 h-4" />
                 Connect AI Studio

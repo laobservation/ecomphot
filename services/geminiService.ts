@@ -9,9 +9,11 @@ const getErrorMessage = (error: unknown): string => {
     message = error;
   }
 
-  if (message.includes('API Key must be set') || message.includes('UNAUTHENTICATED') || message.includes('API key not valid')) {
-    return "Google AI Studio is not connected. Please click the 'Connect AI Studio' button in the top right corner to get started.";
+  // Handle common key-related errors with helpful UI instructions
+  if (message.includes('API Key not set') || message.includes('API_KEY') || message.includes('UNAUTHENTICATED') || message.includes('invalid authentication')) {
+    return "Google AI Studio is not connected. Please click the 'Connect AI Studio' button in the top right corner to link your API key.";
   }
+  
   if (message.includes('429')) {
     return "The service is currently busy (Rate Limit). Please try again in a moment.";
   }
@@ -77,12 +79,9 @@ Your task is to replace the background of a provided product image. The product 
 };
 
 export const processImageWithGemini = async (file: File, options: CustomizationOptions, niche: string, atmosphereFiles: File[], logoFile: File | null): Promise<string> => {
-  if (!process.env.API_KEY) {
-     throw new Error("API Key must be set");
-  }
-
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const apiKey = process.env.API_KEY || "";
+    const ai = new GoogleGenAI({ apiKey });
     const prompt = buildPrompt(options, niche, atmosphereFiles.length > 0, !!logoFile);
     
     const parts = [
@@ -113,10 +112,9 @@ export const processImageWithGemini = async (file: File, options: CustomizationO
 };
 
 export const upscaleImageWithGemini = async (file: File): Promise<string> => {
-    if (!process.env.API_KEY) throw new Error("API Key must be set");
-
     try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const apiKey = process.env.API_KEY || "";
+        const ai = new GoogleGenAI({ apiKey });
         const imagePart = await fileToGenerativePart(file);
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
@@ -129,10 +127,9 @@ export const upscaleImageWithGemini = async (file: File): Promise<string> => {
 };
 
 export const correctColorWithGemini = async (file: File): Promise<string> => {
-    if (!process.env.API_KEY) throw new Error("API Key must be set");
-
     try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const apiKey = process.env.API_KEY || "";
+        const ai = new GoogleGenAI({ apiKey });
         const imagePart = await fileToGenerativePart(file);
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
@@ -145,10 +142,9 @@ export const correctColorWithGemini = async (file: File): Promise<string> => {
 }
 
 export const regenerateBackgroundPrompts = async (niche: string): Promise<string[]> => {
-  if (!process.env.API_KEY) throw new Error("API Key must be set");
-
   try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const apiKey = process.env.API_KEY || "";
+      const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `Generate a JSON array of 20 background scene descriptions for "${niche}" e-commerce photography.`,
@@ -165,10 +161,9 @@ export const generateVideoWithGemini = async (
   duration: number,
   onProgress: (message: string) => void
 ): Promise<string> => {
-  if (!process.env.API_KEY) throw new Error("API Key must be set");
-
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const apiKey = process.env.API_KEY || "";
+    const ai = new GoogleGenAI({ apiKey });
     
     onProgress("Preparing image...");
     const imagePart = await fileToGenerativePart(imageFile);
@@ -194,7 +189,7 @@ export const generateVideoWithGemini = async (
 
     onProgress("Downloading video...");
     const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
-    const videoResponse = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
+    const videoResponse = await fetch(`${downloadLink}&key=${apiKey}`);
     const videoBlob = await videoResponse.blob();
     return URL.createObjectURL(videoBlob);
   } catch (error) {
