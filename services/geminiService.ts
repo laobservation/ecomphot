@@ -9,8 +9,19 @@ const getErrorMessage = (error: unknown): string => {
     message = error;
   }
 
+  // Handle common key-related errors with helpful UI instructions
+  if (
+    message.includes('API Key must be set') || 
+    message.includes('API_KEY') || 
+    message.includes('UNAUTHENTICATED') || 
+    message.includes('invalid authentication') ||
+    message.includes('entity was not found')
+  ) {
+    return "Google AI Studio is not connected. Please click the 'Connect AI Studio' button in the top right corner to link your API key.";
+  }
+  
   if (message.includes('429')) {
-    return "The AI service is currently at capacity. Please try again in a moment.";
+    return "The AI service is currently at capacity (Rate Limit). Please try again in a moment.";
   }
 
   try {

@@ -5,7 +5,7 @@ import { PhotoStudio } from './components/PhotoStudio';
 import { VideoStudio } from './components/VideoStudio';
 import { ModeSwitcher } from './components/ModeSwitcher';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { UploadIcon, CameraIcon } from './components/Icons';
+import { UploadIcon, CameraIcon, SparklesIcon } from './components/Icons';
 import { Theme } from './types';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 
@@ -27,6 +27,21 @@ const App: React.FC = () => {
   const [selectedNiche, setSelectedNiche] = useState('furniture');
   const [mode, setMode] = useState<'photo' | 'video'>('photo');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
+
+  // Check for API Key on mount
+  useEffect(() => {
+    const checkKey = async () => {
+      if ((window as any).aistudio?.hasSelectedApiKey) {
+        const hasKey = await (window as any).aistudio.hasSelectedApiKey();
+        setHasApiKey(hasKey);
+      } else {
+        // Fallback for environments without the helper
+        setHasApiKey(!!process.env.API_KEY);
+      }
+    };
+    checkKey();
+  }, []);
 
   const [theme, setTheme] = useState<Theme>(() => {
     return (localStorage.getItem('theme') as Theme) || 'system';
@@ -55,7 +70,6 @@ const App: React.FC = () => {
 
   const handleSimulatedLogin = () => {
     setIsLoggingIn(true);
-    // Simulate network delay for a real "Google Login" experience
     setTimeout(() => {
       const mockUser = { 
         name: 'Vantage Designer', 
@@ -66,6 +80,14 @@ const App: React.FC = () => {
       localStorage.setItem('vantage_user', JSON.stringify(mockUser));
       setIsLoggingIn(false);
     }, 800);
+  };
+
+  const handleConnectApiKey = async () => {
+    if ((window as any).aistudio?.openSelectKey) {
+      await (window as any).aistudio.openSelectKey();
+      // Assume success to avoid race condition as per instructions
+      setHasApiKey(true);
+    }
   };
 
   const handleLogout = () => {
@@ -119,8 +141,8 @@ const App: React.FC = () => {
           <div className="inline-flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-2xl p-4 mb-8">
             <CameraIcon className="w-12 h-12" />
           </div>
-          <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">Vantage Studio</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-10 leading-relaxed">
+          <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight text-center">Vantage Studio</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-10 leading-relaxed text-center">
             Transform amateur snapshots into studio-quality photos. Sign in with Google to access the AI Studio.
           </p>
           
@@ -163,6 +185,15 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-end">
+            {!hasApiKey && (
+              <button 
+                onClick={handleConnectApiKey}
+                className="flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl border border-amber-200 dark:border-amber-800 hover:bg-amber-200 transition-all shadow-sm animate-pulse"
+              >
+                <SparklesIcon className="w-4 h-4" />
+                Connect AI Studio
+              </button>
+            )}
             <LanguageSwitcher />
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
           </div>
