@@ -41,8 +41,12 @@ const App: React.FC = () => {
 
 
   useEffect(() => {
-    document.documentElement.lang = i18n.language;
-    document.documentElement.dir = i18n.dir(i18n.language);
+    if (i18n.language) {
+      document.documentElement.lang = i18n.language;
+      if (i18n.dir && typeof i18n.dir === 'function') {
+        document.documentElement.dir = i18n.dir(i18n.language);
+      }
+    }
   }, [i18n, i18n.language]);
 
   const handleDrag = useCallback((e: DragEvent) => {

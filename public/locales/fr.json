@@ -1,0 +1,190 @@
+{
+  "header": {
+    "title": "Photos E-commerce Pro à partir de n'importe quel cliché",
+    "subtitle": "Créez instantanément des images de style de vie photoréalistes. Placez votre produit dans n'importe quelle scène personnalisée que vous pouvez décrire."
+  },
+  "footer": {
+    "poweredBy": "Propulsé par Gemini AI"
+  },
+  "languageSwitcher": {
+    "label": "Langue",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español",
+    "ar": "العربية"
+  },
+  "themeSwitcher": {
+    "label": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
+  "modeSwitcher": {
+    "photoStudio": "Studio Photo",
+    "videoStudio": "Studio Vidéo"
+  },
+  "photoStudio": {
+    "howItWorksTitle": "Comment créer votre scène",
+    "step1": "Téléchargez une ou plusieurs photos de produits.",
+    "step2": "Décrivez la scène dans laquelle vous souhaitez placer votre produit.",
+    "step3": "Cliquez sur \"Générer\" sur chaque photo pour créer une photo de style de vie photoréaliste !",
+    "uploadTitle": "1. Ajoutez vos photos",
+    "customizeTitle": "2. Personnalisez",
+    "resultsTitle": "3. Obtenez des photos pro",
+    "takePhoto": "Prendre une photo",
+    "enhance": "Améliorer",
+    "enhance_plural": "Améliorer",
+    "enhancePhoto_one": "Améliorer {{count}} photo",
+    "enhancePhoto_other": "Améliorer {{count}} photos",
+    "processing": "Traitement...",
+    "downloadAll": "Tout télécharger",
+    "progress": {
+      "processing": "Traitement de l'image {{current}} sur {{total}}...",
+      "finishing": "Finalisation...",
+      "label": "Progression du traitement de l'image"
+    }
+  },
+  "videoStudio": {
+    "howItWorksTitle": "Comment créer votre vidéo",
+    "step1": "Téléchargez une photo de produit qui servira d'image de départ.",
+    "step2": "Décrivez l'animation ou la scène de votre vidéo.",
+    "step3": "Cliquez sur \"Créer la vidéo\" et l'IA générera un court clip cinématique !",
+    "uploadTitle": "1. Ajoutez votre photo",
+    "configureTitle": "2. Configurez la vidéo",
+    "resultsTitle": "3. Obtenez votre vidéo",
+    "promptLabel": "Instruction pour la vidéo",
+    "promptPlaceholder": "ex: Une rotation cinématique à 360 degrés du produit...",
+    "suggestionLabel": "Ou essayez une idée rapide :",
+    "suggestions": {
+      "spin": "Rotation 360°",
+      "assembly": "Assemblage Stop-motion",
+      "float": "Flottement en apesanteur",
+      "nature": "Scène naturelle",
+      "splash": "Éclaboussure au ralenti",
+      "blueprint": "Plan holographique",
+      "urban": "Style de vie urbain",
+      "minimalist": "Focus minimaliste"
+    },
+    "durationLabel": "Durée : {{duration}}s",
+    "durationTooltip": "Définir la durée souhaitée du clip vidéo.",
+    "createVideo": "Créer la vidéo",
+    "creating": "Création en cours...",
+    "downloadVideo": "Télécharger la vidéo",
+    "idleState": {
+      "title": "Votre vidéo générée apparaîtra ici",
+      "subtitle": "Téléchargez une image et décrivez votre scène pour commencer."
+    },
+    "processingState": {
+      "title": "Génération de votre vidéo...",
+      "messages": {
+        "preparing": "Préparation de votre image...",
+        "initiating": "Lancement de la génération avec l'IA...",
+        "started": "Processus démarré. Cela peut prendre quelques minutes...",
+        "checking": "Vérification de l'état de la vidéo...",
+        "downloading": "Traitement terminé. Téléchargement de la vidéo...",
+        "ready": "Votre vidéo est prête !"
+      }
+    },
+    "errorState": {
+      "title": "La génération de la vidéo a échoué",
+      "subtitle": "Une erreur est survenue lors de la création de votre vidéo. Veuillez réessayer."
+    }
+  },
+  "imageUploader": {
+    "upload": "Cliquez pour télécharger",
+    "drag": "ou glissez-déposez",
+    "welcome": "Les photos de téléphone sont les bienvenues ! Nous nous occupons de la magie.",
+    "single": "Une seule image de produit",
+    "dropAnywhere": "Déposez vos images n'importe où",
+    "magic": "Relâchez pour les ajouter au studio !"
+  },
+  "atmosphereUploader": {
+    "title": "Ajouter des photos d'ambiance (Facultatif)",
+    "description": "Ajoutez des photos de l'intérieur de votre restaurant, des tables ou du décor. L'IA les utilisera comme source d'inspiration pour créer un arrière-plan assorti.",
+    "upload": "Ajouter photo(s) d'ambiance"
+  },
+  "controls": {
+    "background": "Description de la scène",
+    "customPrompt": "Instruction personnalisée",
+    "quickOptions": "Options rapides",
+    "promptPlaceholder": "ex: sur un comptoir en marbre dans une cuisine bien éclairée",
+    "nicheLabel": "Sélectionnez une niche",
+    "suggestionLabel": "Suggestion de scène",
+    "selectPlaceholder": "Sélectionnez une idée d'arrière-plan...",
+    "regeneratePrompts": "Nouvelles idées",
+    "regeneratePromptsTooltip": "Générer une nouvelle liste d'idées d'arrière-plan avec l'IA",
+    "regeneratingPrompts": "Génération...",
+    "regenerateErrorTitle": "Impossible d'obtenir de nouvelles idées",
+    "niches": {
+      "beauty": "Beauté et Cosmétiques",
+      "furniture": "Meubles & Décoration",
+      "restaurant": "Restaurant & Culinaire",
+      "clothing": "Vêtements & Habillement"
+    },
+    "aspectRatio": "Format d'image",
+    "aspectRatioTooltip": "Modifie la forme finale de l'image. 1:1 est un carré, bon pour les fiches produits et les réseaux sociaux. 'Original' conserve la même forme que votre photo téléchargée.",
+    "aspectRatios": {
+      "original": "Original"
+    },
+    "backgroundStyle": "Style de l'arrière-plan",
+    "restaurantModes": {
+      "enhance": "Améliorer la scène originale",
+      "replace": "Remplacer par une nouvelle scène"
+    },
+    "logo": {
+      "title": "Logo de la marque (Facultatif)",
+      "upload": "Télécharger le logo",
+      "remove": "Retirer le logo"
+    }
+  },
+  "imagePreview": {
+    "before": "Avant",
+    "after": "Après",
+    "enhancing": "Amélioration...",
+    "failed": "Le traitement a échoué",
+    "processed": "Image traitée",
+    "emptyState": {
+      "title": "Vos images apparaîtront ici",
+      "subtitle": "Téléchargez vos photos de produits pour commencer."
+    },
+    "generate": "Générer",
+    "upscale": "Agrandir",
+    "upscaleTooltip": "Augmenter la résolution de l'image",
+    "upscaling": "Agrandissement...",
+    "upscaled": "Agrandie",
+    "retry": "Réessayer",
+    "retryTooltip": "Erreur : {{error}}. Cliquez pour réessayer.",
+    "regenerate": "Régénérer",
+    "regenerateTooltip": "Générer une nouvelle version de cette image",
+    "downloadTooltip": "Télécharger",
+    "download2x": "Télécharger 2x",
+    "colorCorrect": "Corriger Couleurs",
+    "colorCorrecting": "Correction...",
+    "colorCorrected": "Corrigé",
+    "colorCorrectTooltip": "Ajuster automatiquement les couleurs, la luminosité et le contraste",
+    "retryColorCorrectTooltip": "Erreur : {{error}}. Cliquez pour réessayer la correction des couleurs."
+  },
+  "infoBanner": {
+    "dismiss": "Rejeter"
+  },
+  "cameraCapture": {
+    "title": "Prendre une photo",
+    "capture": "Capturer",
+    "retake": "Reprendre",
+    "usePhoto": "Utiliser la photo",
+    "error": {
+      "title": "Erreur de caméra",
+      "noAccess": "L'accès à la caméra a été refusé. Veuillez autoriser l'accès à la caméra dans les paramètres de votre navigateur pour utiliser cette fonctionnalité.",
+      "noDevice": "Aucun périphérique de caméra compatible n'a été trouvé sur ce système.",
+      "generic": "Impossible de démarrer la caméra. Elle est peut-être utilisée par une autre application."
+    }
+  },
+  "common": {
+    "error": {
+      "unknown": "Une erreur inconnue est survenue.",
+      "noImage": "Aucune image n'a été générée. Le modèle a peut-être refusé la demande.",
+      "upscaleFailed": "L'agrandissement a échoué. Le modèle n'a pas renvoyé d'image.",
+      "colorCorrectFailed": "La correction des couleurs a échoué. Le modèle n'a pas renvoyé d'image."
+    }
+  }
+}

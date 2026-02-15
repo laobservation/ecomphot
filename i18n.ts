@@ -3,11 +3,19 @@ import { initReactI18next } from 'react-i18next';
 
 const configureI18n = async () => {
   try {
+    const fetchLocale = async (locale: string) => {
+      const res = await fetch(`/locales/${locale}.json`);
+      if (!res.ok) {
+        throw new Error(`Failed to load ${locale} locale: ${res.status}`);
+      }
+      return res.json();
+    };
+
     const [en, fr, es, ar] = await Promise.all([
-      fetch('./locales/en.json').then(res => res.json()),
-      fetch('./locales/fr.json').then(res => res.json()),
-      fetch('./locales/es.json').then(res => res.json()),
-      fetch('./locales/ar.json').then(res => res.json()),
+      fetchLocale('en'),
+      fetchLocale('fr'),
+      fetchLocale('es'),
+      fetchLocale('ar'),
     ]);
 
     const resources = {

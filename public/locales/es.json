@@ -1,0 +1,190 @@
+{
+  "header": {
+    "title": "Fotos Profesionales de E-commerce desde Cualquier Instantánea",
+    "subtitle": "Crea al instante imágenes de estilo de vida fotorrealistas. Coloca tu producto en cualquier escena personalizada que puedas describir."
+  },
+  "footer": {
+    "poweredBy": "Desarrollado por Gemini AI"
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español",
+    "ar": "العربية"
+  },
+  "themeSwitcher": {
+    "label": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "modeSwitcher": {
+    "photoStudio": "Estudio de Foto",
+    "videoStudio": "Estudio de Video"
+  },
+  "photoStudio": {
+    "howItWorksTitle": "Cómo crear tu escena",
+    "step1": "Sube una o más fotos de productos.",
+    "step2": "Describe la escena en la que quieres colocar tu producto.",
+    "step3": "¡Haz clic en \"Generar\" en cada foto para crear una imagen de estilo de vida fotorrealista!",
+    "uploadTitle": "1. Añade tus fotos",
+    "customizeTitle": "2. Personaliza",
+    "resultsTitle": "3. Obtén fotos profesionales",
+    "takePhoto": "Tomar una foto",
+    "enhance": "Mejorar",
+    "enhance_plural": "Mejorar",
+    "enhancePhoto_one": "Mejorar {{count}} foto",
+    "enhancePhoto_other": "Mejorar {{count}} fotos",
+    "processing": "Procesando...",
+    "downloadAll": "Descargar todo",
+    "progress": {
+      "processing": "Procesando imagen {{current}} de {{total}}...",
+      "finishing": "Finalizando...",
+      "label": "Progreso del procesamiento de imágenes"
+    }
+  },
+  "videoStudio": {
+    "howItWorksTitle": "Cómo crear tu video",
+    "step1": "Sube una foto de producto para que sirva como imagen inicial.",
+    "step2": "Describe la animación o escena para tu video.",
+    "step3": "¡Haz clic en \"Crear Video\" y la IA generará un clip cinemático corto!",
+    "uploadTitle": "1. Añade tu foto",
+    "configureTitle": "2. Configura el video",
+    "resultsTitle": "3. Obtén tu video",
+    "promptLabel": "Instrucción para el video",
+    "promptPlaceholder": "ej: Una rotación cinemática de 360 grados del producto...",
+    "suggestionLabel": "O prueba una idea rápida:",
+    "suggestions": {
+      "spin": "Giro 360°",
+      "assembly": "Montaje Stop-motion",
+      "float": "Flotación sin gravedad",
+      "nature": "Escena natural",
+      "splash": "Salpicadura en cámara lenta",
+      "blueprint": "Plano holográfico",
+      "urban": "Estilo de vida urbano",
+      "minimalist": "Enfoque minimalista"
+    },
+    "durationLabel": "Duración: {{duration}}s",
+    "durationTooltip": "Establece la duración deseada del videoclip.",
+    "createVideo": "Crear Video",
+    "creating": "Creando...",
+    "downloadVideo": "Descargar Video",
+    "idleState": {
+      "title": "Tu video generado aparecerá aquí",
+      "subtitle": "Sube una imagen y describe tu escena para comenzar."
+    },
+    "processingState": {
+      "title": "Generando tu video...",
+      "messages": {
+        "preparing": "Preparando tu imagen...",
+        "initiating": "Iniciando generación con la IA...",
+        "started": "Proceso iniciado. Esto puede tardar unos minutos...",
+        "checking": "Comprobando estado del video...",
+        "downloading": "Procesamiento completo. Descargando video...",
+        "ready": "¡Tu video está listo!"
+      }
+    },
+    "errorState": {
+      "title": "Falló la generación del video",
+      "subtitle": "Ocurrió un error al crear tu video. Por favor, inténtalo de nuevo."
+    }
+  },
+  "imageUploader": {
+    "upload": "Haz clic para subir",
+    "drag": "o arrastra y suelta",
+    "welcome": "¡Aceptamos fotos de móvil! Nosotros nos encargamos de la magia.",
+    "single": "Una sola imagen de producto",
+    "dropAnywhere": "Suelta tus imágenes en cualquier lugar",
+    "magic": "¡Suelta para añadirlas al estudio!"
+  },
+  "atmosphereUploader": {
+    "title": "Añadir Fotos de Ambiente (Opcional)",
+    "description": "Sube fotos del interior de tu restaurante, mesas o decoración. La IA las usará como inspiración para crear un fondo a juego.",
+    "upload": "Añadir Foto(s) de Ambiente"
+  },
+  "controls": {
+    "background": "Descripción de la escena",
+    "customPrompt": "Instrucción personalizada",
+    "quickOptions": "Opciones rápidas",
+    "promptPlaceholder": "ej: sobre una encimera de mármol en una cocina bien iluminada",
+    "nicheLabel": "Selecciona un nicho",
+    "suggestionLabel": "Sugerencia de escena",
+    "selectPlaceholder": "Selecciona una idea de fondo...",
+    "regeneratePrompts": "Nuevas Ideas",
+    "regeneratePromptsTooltip": "Generar una nueva lista de ideas de fondos con IA",
+    "regeneratingPrompts": "Generando...",
+    "regenerateErrorTitle": "No se pudieron obtener nuevas ideas",
+    "niches": {
+      "beauty": "Belleza y Cosméticos",
+      "furniture": "Muebles y Decoración",
+      "restaurant": "Restaurante y Comida",
+      "clothing": "Ropa y Vestimenta"
+    },
+    "aspectRatio": "Relación de aspecto",
+    "aspectRatioTooltip": "Cambia la forma final de la imagen. 1:1 es un cuadrado, bueno para listados de productos y redes sociales. 'Original' mantiene la misma forma que tu foto subida.",
+    "aspectRatios": {
+      "original": "Original"
+    },
+    "backgroundStyle": "Estilo de fondo",
+    "restaurantModes": {
+      "enhance": "Mejorar escena original",
+      "replace": "Reemplazar con nueva escena"
+    },
+    "logo": {
+      "title": "Logo de la Marca (Opcional)",
+      "upload": "Subir Logo",
+      "remove": "Quitar Logo"
+    }
+  },
+  "imagePreview": {
+    "before": "Antes",
+    "after": "Después",
+    "enhancing": "Mejorando...",
+    "failed": "Procesamiento fallido",
+    "processed": "Imagen procesada",
+    "emptyState": {
+      "title": "Tus imágenes aparecerán aquí",
+      "subtitle": "Sube las fotos de tus productos para empezar."
+    },
+    "generate": "Generar",
+    "upscale": "Ampliar",
+    "upscaleTooltip": "Aumentar la resolución de la imagen",
+    "upscaling": "Ampliando...",
+    "upscaled": "Ampliada",
+    "retry": "Reintentar",
+    "retryTooltip": "Error: {{error}}. Haz clic para reintentar.",
+    "regenerate": "Regenerar",
+    "regenerateTooltip": "Generar una nueva versión de esta imagen",
+    "downloadTooltip": "Descargar",
+    "download2x": "Descargar 2x",
+    "colorCorrect": "Corregir Color",
+    "colorCorrecting": "Corrigiendo...",
+    "colorCorrected": "Corregido",
+    "colorCorrectTooltip": "Ajustar automáticamente colores, brillo y contraste",
+    "retryColorCorrectTooltip": "Error: {{error}}. Haz clic para reintentar la corrección de color."
+  },
+  "infoBanner": {
+    "dismiss": "Descartar"
+  },
+  "cameraCapture": {
+    "title": "Capturar foto",
+    "capture": "Capturar",
+    "retake": "Repetir",
+    "usePhoto": "Usar foto",
+    "error": {
+      "title": "Error de la cámara",
+      "noAccess": "Se denegó el acceso a la cámara. Por favor, permite el acceso a la cámara en la configuración de tu navegador para usar esta función.",
+      "noDevice": "No se encontró ningún dispositivo de cámara compatible en este sistema.",
+      "generic": "No se pudo iniciar la cámara. Podría estar en uso por otra aplicación."
+    }
+  },
+  "common": {
+    "error": {
+      "unknown": "Ocurrió un error desconocido.",
+      "noImage": "No se generó ninguna imagen. Es posible que el modelo haya reducido la solicitud.",
+      "upscaleFailed": "Falló la ampliación. El modelo no devolvió una imagen.",
+      "colorCorrectFailed": "La corrección de color falló. El modelo no devolvió una imagen."
+    }
+  }
+}
