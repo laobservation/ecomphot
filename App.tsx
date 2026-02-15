@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Header } from './components/Header';
 import { PhotoStudio } from './components/PhotoStudio';
+import { VideoStudio } from './components/VideoStudio';
+import { ModeSwitcher } from './components/ModeSwitcher';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { UploadIcon } from './components/Icons';
 import { Theme } from './types';
@@ -12,6 +14,7 @@ const App: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const dragCounter = useRef(0);
   const [selectedNiche, setSelectedNiche] = useState('furniture');
+  const [mode, setMode] = useState<'photo' | 'video'>('photo');
 
   const [theme, setTheme] = useState<Theme>(() => {
     return (localStorage.getItem('theme') as Theme) || 'system';
@@ -38,7 +41,6 @@ const App: React.FC = () => {
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme]);
-
 
   useEffect(() => {
     if (i18n.language) {
@@ -100,13 +102,12 @@ const App: React.FC = () => {
     };
   }, [handleDragIn, handleDragOut, handleDrag, handleDrop]);
 
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-slate-200 font-sans transition-colors duration-300">
       <div className="container mx-auto px-4 py-4 md:py-12">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 md:mb-12">
           <div className="order-2 sm:order-1 flex items-center gap-4 w-full sm:w-auto justify-center sm:justify-start">
-             {/* This space intentionally left for logo branding */}
+             {/* Logo Branding */}
           </div>
           <div className="order-1 sm:order-2 flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-end">
             <LanguageSwitcher />
@@ -116,7 +117,13 @@ const App: React.FC = () => {
         
         <main className="max-w-7xl mx-auto">
           <Header />
-          <PhotoStudio selectedNiche={selectedNiche} setSelectedNiche={setSelectedNiche} />
+          <ModeSwitcher mode={mode} setMode={setMode} />
+          
+          {mode === 'photo' ? (
+            <PhotoStudio selectedNiche={selectedNiche} setSelectedNiche={setSelectedNiche} />
+          ) : (
+            <VideoStudio />
+          )}
         </main>
 
         {isDragging && (
