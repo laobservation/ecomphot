@@ -9,19 +9,14 @@ const getErrorMessage = (error: unknown): string => {
     message = error;
   }
 
-  // Handle common key-related errors with helpful UI instructions
-  if (message.includes('API Key not set') || message.includes('API_KEY') || message.includes('UNAUTHENTICATED') || message.includes('invalid authentication')) {
-    return "Google AI Studio is not connected. Please click the 'Connect AI Studio' button in the top right corner to link your API key.";
-  }
-  
   if (message.includes('429')) {
-    return "The service is currently busy (Rate Limit). Please try again in a moment.";
+    return "The AI service is currently at capacity. Please try again in a moment.";
   }
 
   try {
     const parsedError = JSON.parse(message);
     if (parsedError?.error?.message) {
-      return `The AI service returned an error: ${parsedError.error.message}`;
+      return `AI Service Error: ${parsedError.error.message}`;
     }
   } catch (e) {}
   
@@ -52,36 +47,33 @@ const fileToGenerativePart = async (file: File) => {
 const buildPrompt = (options: CustomizationOptions, niche: string, hasAtmosphereImages: boolean, hasLogo: boolean): string => {
   let aspectRatioInstruction: string;
   if (options.aspectRatio && options.aspectRatio !== 'Original') {
-    aspectRatioInstruction = `CRITICAL REQUIREMENT: The final output image MUST be rendered with a strict aspect ratio of ${options.aspectRatio}. Creatively expand the background scene to fill these dimensions naturally. Do not crop, distort, or letterbox the original product.`;
+    aspectRatioInstruction = `CRITICAL: The final output image MUST be rendered with a strict aspect ratio of ${options.aspectRatio}. Expand the scene naturally to fill these dimensions.`;
   } else {
-    aspectRatioInstruction = `The final output image should retain the original aspect ratio of the product photo.`;
+    aspectRatioInstruction = `The final output image should retain the original aspect ratio.`;
   }
   
   let logoInstruction = '';
   if (hasLogo) {
     if (niche === 'furniture') {
       logoInstruction = `
-**Brand Logo Integration (Wall Art):** A brand logo is provided (Image 2). You MUST place this logo on a wall within the generated room scene as wall decor (framed or canvas).`;
+**Brand Integration:** Place the provided logo (Image 2) naturally within the room scene (e.g., as framed wall art).`;
     } else {
       logoInstruction = `
-**Brand Logo Integration:** A brand logo has been provided as the second image. Place this logo naturally (e.g., on a tag or as a subtle watermark).`;
+**Brand Integration:** Integrate the brand logo provided as the second image naturally onto the product or setting.`;
     }
   }
 
-  const basePrompt = `
-**Absolute Primary Directive: PRESERVE THE ORIGINAL PRODUCT INTEGRITY.**
-Your task is to replace the background of a provided product image. The product itself must remain 100% IDENTICAL to the original.
-1. **Background Replacement:** Remove original background. Generate new scene: "${options.backgroundColor}".
-2. **Shadow Generation:** Create a soft, realistic shadow cast by the product onto the NEW background.
-**Technical:** Aspect ratio: ${aspectRatioInstruction}. ${logoInstruction}`;
-
-  return basePrompt;
+  return `
+**Absolute Primary Directive: PRESERVE THE ORIGINAL PRODUCT.**
+Replace the background of the product image. The product must remain 100% identical.
+1. **Background:** Generate a new photorealistic scene: "${options.backgroundColor}".
+2. **Lighting:** Create realistic shadows and lighting consistent with the new scene.
+3. **Dimensions:** ${aspectRatioInstruction} ${logoInstruction}`;
 };
 
 export const processImageWithGemini = async (file: File, options: CustomizationOptions, niche: string, atmosphereFiles: File[], logoFile: File | null): Promise<string> => {
   try {
-    const apiKey = process.env.API_KEY || "";
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const prompt = buildPrompt(options, niche, atmosphereFiles.length > 0, !!logoFile);
     
     const parts = [
@@ -105,7 +97,7 @@ export const processImageWithGemini = async (file: File, options: CustomizationO
     if (imagePart?.inlineData?.data) {
         return `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
     }
-    throw new Error(response.text || "No image was generated.");
+    throw new Error(response.text || "No image content returned from the model.");
   } catch (error) {
     throw new Error(getErrorMessage(error));
   }
@@ -113,27 +105,25 @@ export const processImageWithGemini = async (file: File, options: CustomizationO
 
 export const upscaleImageWithGemini = async (file: File): Promise<string> => {
     try {
-        const apiKey = process.env.API_KEY || "";
-        const ai = new GoogleGenAI({ apiKey });
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const imagePart = await fileToGenerativePart(file);
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
-          contents: { parts: [imagePart, { text: "Upscale this image to twice its resolution." }] },
+          contents: { parts: [imagePart, { text: "Upscale this image to twice its original resolution while preserving detail." }] },
         });
         const generatedPart = response.candidates[0].content.parts.find(p => p.inlineData);
         if (generatedPart?.inlineData?.data) return `data:${generatedPart.inlineData.mimeType};base64,${generatedPart.inlineData.data}`;
-        throw new Error("Upscaling failed.");
+        throw new Error("Upscaling process failed.");
     } catch (error) { throw new Error(getErrorMessage(error)); }
 };
 
 export const correctColorWithGemini = async (file: File): Promise<string> => {
     try {
-        const apiKey = process.env.API_KEY || "";
-        const ai = new GoogleGenAI({ apiKey });
+        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const imagePart = await fileToGenerativePart(file);
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash-image',
-          contents: { parts: [imagePart, { text: "Perform professional color correction." }] },
+          contents: { parts: [imagePart, { text: "Perform professional studio color correction, white balance, and contrast optimization." }] },
         });
         const generatedPart = response.candidates[0].content.parts.find(p => p.inlineData);
         if (generatedPart?.inlineData?.data) return `data:${generatedPart.inlineData.mimeType};base64,${generatedPart.inlineData.data}`;
@@ -143,11 +133,10 @@ export const correctColorWithGemini = async (file: File): Promise<string> => {
 
 export const regenerateBackgroundPrompts = async (niche: string): Promise<string[]> => {
   try {
-      const apiKey = process.env.API_KEY || "";
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: `Generate a JSON array of 20 background scene descriptions for "${niche}" e-commerce photography.`,
+        contents: `Generate 20 creative and cinematic background scene prompts for "${niche}" product photography. Format as a simple JSON array of strings.`,
       });
       const text = response.text.trim();
       const jsonString = text.startsWith('```json') ? text.replace('```json', '').replace('```', '') : text;
@@ -162,10 +151,9 @@ export const generateVideoWithGemini = async (
   onProgress: (message: string) => void
 ): Promise<string> => {
   try {
-    const apiKey = process.env.API_KEY || "";
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
-    onProgress("Preparing image...");
+    onProgress("Preparing visual assets...");
     const imagePart = await fileToGenerativePart(imageFile);
     
     let operation = await ai.models.generateVideos({
@@ -178,18 +166,18 @@ export const generateVideoWithGemini = async (
       config: { numberOfVideos: 1, resolution: '720p', aspectRatio: '16:9' }
     });
 
-    onProgress("Generating video (this may take a few minutes)...");
+    onProgress("Synthesizing cinematic video...");
     
     while (!operation.done) {
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      await new Promise(resolve => setTimeout(resolve, 8000));
       operation = await ai.operations.getVideosOperation({ operation: operation });
     }
 
     if (operation.error) throw new Error(operation.error.message);
 
-    onProgress("Downloading video...");
+    onProgress("Finalizing download...");
     const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
-    const videoResponse = await fetch(`${downloadLink}&key=${apiKey}`);
+    const videoResponse = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
     const videoBlob = await videoResponse.blob();
     return URL.createObjectURL(videoBlob);
   } catch (error) {

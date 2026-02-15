@@ -5,7 +5,7 @@ import { PhotoStudio } from './components/PhotoStudio';
 import { VideoStudio } from './components/VideoStudio';
 import { ModeSwitcher } from './components/ModeSwitcher';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { UploadIcon, SparklesIcon, CameraIcon } from './components/Icons';
+import { UploadIcon, CameraIcon } from './components/Icons';
 import { Theme } from './types';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 
@@ -26,7 +26,6 @@ const App: React.FC = () => {
   const dragCounter = useRef(0);
   const [selectedNiche, setSelectedNiche] = useState('furniture');
   const [mode, setMode] = useState<'photo' | 'video'>('photo');
-  const [hasApiKey, setHasApiKey] = useState(!!process.env.API_KEY);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const [theme, setTheme] = useState<Theme>(() => {
@@ -56,28 +55,17 @@ const App: React.FC = () => {
 
   const handleSimulatedLogin = () => {
     setIsLoggingIn(true);
-    // Simulate network delay for a real "Google Login" feel
+    // Simulate network delay for a real "Google Login" experience
     setTimeout(() => {
       const mockUser = { 
-        name: 'Vantage User', 
-        email: 'user@gmail.com', 
+        name: 'Vantage Designer', 
+        email: 'studio@vantage.ai', 
         picture: 'https://i.pravatar.cc/150?u=vantage' 
       };
       setUser(mockUser);
       localStorage.setItem('vantage_user', JSON.stringify(mockUser));
       setIsLoggingIn(false);
     }, 800);
-  };
-
-  const handleConnectApiKey = async () => {
-    if ((window as any).aistudio?.openSelectKey) {
-      await (window as any).aistudio.openSelectKey();
-      setHasApiKey(true);
-      // Wait a moment for injection then refresh state
-      setTimeout(() => {
-        if (process.env.API_KEY) setHasApiKey(true);
-      }, 500);
-    }
   };
 
   const handleLogout = () => {
@@ -126,14 +114,14 @@ const App: React.FC = () => {
   // LOGIN SCREEN
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-6 font-sans">
         <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 md:p-12 text-center border border-gray-100 dark:border-gray-700">
           <div className="inline-flex items-center justify-center bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-2xl p-4 mb-8">
             <CameraIcon className="w-12 h-12" />
           </div>
           <h1 className="text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">Vantage Studio</h1>
           <p className="text-gray-600 dark:text-gray-400 mb-10 leading-relaxed">
-            Professional AI product photography for your business. Sign in with your Google account to start.
+            Transform amateur snapshots into studio-quality photos. Sign in with Google to access the AI Studio.
           </p>
           
           <button 
@@ -151,7 +139,7 @@ const App: React.FC = () => {
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
               </svg>
             )}
-            {isLoggingIn ? "Signing in..." : "Sign in with Google"}
+            {isLoggingIn ? "Authenticating..." : "Sign in with Google"}
           </button>
         </div>
       </div>
@@ -175,15 +163,6 @@ const App: React.FC = () => {
           </div>
           
           <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-end">
-            {!hasApiKey && (
-              <button 
-                onClick={handleConnectApiKey}
-                className="flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl border border-amber-200 dark:border-amber-800 hover:bg-amber-200 transition-all shadow-sm animate-pulse"
-              >
-                <SparklesIcon className="w-4 h-4" />
-                Connect AI Studio
-              </button>
-            )}
             <LanguageSwitcher />
             <ThemeSwitcher theme={theme} setTheme={setTheme} />
           </div>
@@ -204,18 +183,18 @@ const App: React.FC = () => {
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center pointer-events-none p-4">
             <div className="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-2xl shadow-2xl flex flex-col items-center gap-4 border-4 border-dashed border-indigo-500 dark:border-indigo-400 max-w-sm w-full">
               <UploadIcon className="w-16 h-16 text-indigo-500 dark:text-indigo-400 animate-bounce" />
-              <p className="text-xl font-bold text-gray-700 dark:text-slate-200 text-center">{t('imageUploader.dropAnywhere')}</p>
-              <p className="text-gray-500 dark:text-slate-400 text-center">{t('imageUploader.magic')}</p>
+              <p className="text-xl font-bold text-gray-700 dark:text-slate-200 text-center uppercase tracking-tight">Drop Images Anywhere</p>
+              <p className="text-gray-500 dark:text-slate-400 text-center">Release to add to your current studio session</p>
             </div>
           </div>
         )}
       </div>
       <footer className="mt-12 py-8 border-t border-gray-200 dark:border-gray-800">
         <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-center items-center gap-2">
-          <p className="text-sm text-gray-500 dark:text-slate-400 text-center">
-            &copy; {new Date().getFullYear()} Vantage Studio AI.
+          <p className="text-sm text-gray-500 dark:text-slate-400 text-center font-medium">
+            &copy; {new Date().getFullYear()} Vantage Studio AI. All rights reserved.
           </p>
-          <p className="text-sm text-gray-500 dark:text-slate-400">
+          <p className="text-sm text-gray-500 dark:text-slate-400 font-medium">
             {t('footer.poweredBy')}
           </p>
         </div>
