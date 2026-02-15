@@ -1,0 +1,7 @@
+{
+  "name": "Vantage Studio AI",
+  "description": "Turns your everyday, amateur product snapshots into professional, studio-quality e-commerce photos that drive sales. Create clean backgrounds, apply perfect lighting, and upscale images with AI.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

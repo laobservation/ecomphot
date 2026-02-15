@@ -1,0 +1,190 @@
+{
+  "header": {
+    "title": "Pro E-commerce Photos from Any Snapshot",
+    "subtitle": "Instantly create photorealistic lifestyle images. Place your product into any custom scene you can describe."
+  },
+  "footer": {
+    "poweredBy": "Powered by Gemini AI"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español",
+    "ar": "العربية"
+  },
+  "themeSwitcher": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "modeSwitcher": {
+    "photoStudio": "Photo Studio",
+    "videoStudio": "Video Studio"
+  },
+  "photoStudio": {
+    "howItWorksTitle": "How to Create Your Scene",
+    "step1": "Upload one or more product photos.",
+    "step2": "Describe the scene you want to place your product in.",
+    "step3": "Click \"Generate\" on each photo to create a photorealistic lifestyle shot!",
+    "uploadTitle": "1. Add Your Photos",
+    "customizeTitle": "2. Customize",
+    "resultsTitle": "3. Get Pro Photos",
+    "takePhoto": "Take a Photo",
+    "enhance": "Enhance",
+    "enhance_plural": "Enhance",
+    "enhancePhoto_one": "Enhance {{count}} Photo",
+    "enhancePhoto_other": "Enhance {{count}} Photos",
+    "processing": "Processing...",
+    "downloadAll": "Download All",
+    "progress": {
+      "processing": "Processing image {{current}} of {{total}}...",
+      "finishing": "Finishing up...",
+      "label": "Image processing progress"
+    }
+  },
+  "videoStudio": {
+    "howItWorksTitle": "How to Create Your Video",
+    "step1": "Upload one product photo to serve as the starting image.",
+    "step2": "Describe the animation or scene for your video.",
+    "step3": "Click \"Create Video\" and the AI will generate a short, cinematic clip!",
+    "uploadTitle": "1. Add Your Photo",
+    "configureTitle": "2. Configure Video",
+    "resultsTitle": "3. Get Your Video",
+    "promptLabel": "Video Prompt",
+    "promptPlaceholder": "e.g., A cinematic 360-degree rotation of the product...",
+    "suggestionLabel": "Or try a quick idea:",
+    "suggestions": {
+      "spin": "360° Spin",
+      "assembly": "Stop-motion Assembly",
+      "float": "Zero-gravity Float",
+      "nature": "Natural Scene",
+      "splash": "Slow-motion Splash",
+      "blueprint": "Holographic Blueprint",
+      "urban": "Urban Lifestyle",
+      "minimalist": "Minimalist Focus"
+    },
+    "durationLabel": "Duration: {{duration}}s",
+    "durationTooltip": "Set the desired length of the video clip.",
+    "createVideo": "Create Video",
+    "creating": "Creating...",
+    "downloadVideo": "Download Video",
+    "idleState": {
+      "title": "Your generated video will appear here",
+      "subtitle": "Upload an image and describe your scene to get started."
+    },
+    "processingState": {
+      "title": "Generating your video...",
+      "messages": {
+        "preparing": "Preparing your image...",
+        "initiating": "Initiating generation with the AI...",
+        "started": "Process started. This may take a few minutes...",
+        "checking": "Checking video status...",
+        "downloading": "Processing complete. Downloading video...",
+        "ready": "Your video is ready!"
+      }
+    },
+    "errorState": {
+      "title": "Video Generation Failed",
+      "subtitle": "There was an error creating your video. Please try again."
+    }
+  },
+  "imageUploader": {
+    "upload": "Click to upload",
+    "drag": "or drag and drop",
+    "welcome": "Phone photos welcome! We'll handle the magic.",
+    "single": "A single product image",
+    "dropAnywhere": "Drop Your Images Anywhere",
+    "magic": "Release to add them to the studio!"
+  },
+  "atmosphereUploader": {
+    "title": "Add Ambiance Photos (Optional)",
+    "description": "Add photos of your restaurant's interior, tables, or decor. The AI will use them as inspiration to create a matching background.",
+    "upload": "Add Ambiance Photo(s)"
+  },
+  "controls": {
+    "background": "Scene Description",
+    "customPrompt": "Custom Prompt",
+    "quickOptions": "Quick Options",
+    "promptPlaceholder": "e.g., on a marble countertop in a well-lit kitchen",
+    "nicheLabel": "Select a Niche",
+    "suggestionLabel": "Scene Suggestion",
+    "selectPlaceholder": "Select a background idea...",
+    "regeneratePrompts": "New Ideas",
+    "regeneratePromptsTooltip": "Generate a new list of background ideas with AI",
+    "regeneratingPrompts": "Generating...",
+    "regenerateErrorTitle": "Could not get new ideas",
+    "niches": {
+      "beauty": "Beauty & Cosmetics",
+      "furniture": "Furniture & Decor",
+      "restaurant": "Restaurant & Food",
+      "clothing": "Clothing & Apparel"
+    },
+    "aspectRatio": "Aspect Ratio",
+    "aspectRatioTooltip": "Changes the final shape of the image. 1:1 is a square, good for product listings and social media. 'Original' keeps the same shape as your uploaded photo.",
+    "aspectRatios": {
+      "original": "Original"
+    },
+    "backgroundStyle": "Background Style",
+    "restaurantModes": {
+      "enhance": "Enhance Original Scene",
+      "replace": "Replace with New Scene"
+    },
+    "logo": {
+      "title": "Brand Logo (Optional)",
+      "upload": "Upload Logo",
+      "remove": "Remove Logo"
+    }
+  },
+  "imagePreview": {
+    "before": "Before",
+    "after": "After",
+    "enhancing": "Enhancing...",
+    "failed": "Processing Failed",
+    "processed": "Processed image",
+    "emptyState": {
+      "title": "Your images will appear here",
+      "subtitle": "Upload your product photos to get started."
+    },
+    "generate": "Generate",
+    "upscale": "Upscale",
+    "upscaleTooltip": "Increase image resolution",
+    "upscaling": "Upscaling...",
+    "upscaled": "Upscaled",
+    "retry": "Retry",
+    "retryTooltip": "Error: {{error}}. Click to retry.",
+    "regenerate": "Regenerate",
+    "regenerateTooltip": "Generate a new version of this image",
+    "downloadTooltip": "Download",
+    "download2x": "Download 2x",
+    "colorCorrect": "Color Correct",
+    "colorCorrecting": "Correcting...",
+    "colorCorrected": "Corrected",
+    "colorCorrectTooltip": "Automatically adjust colors, brightness, and contrast",
+    "retryColorCorrectTooltip": "Error: {{error}}. Click to retry color correction."
+  },
+  "infoBanner": {
+    "dismiss": "Dismiss"
+  },
+  "cameraCapture": {
+    "title": "Capture Photo",
+    "capture": "Capture",
+    "retake": "Retake",
+    "usePhoto": "Use Photo",
+    "error": {
+      "title": "Camera Error",
+      "noAccess": "Camera access was denied. Please allow camera access in your browser settings to use this feature.",
+      "noDevice": "No compatible camera device found on this system.",
+      "generic": "Could not start the camera. It might be in use by another application."
+    }
+  },
+  "common": {
+    "error": {
+      "unknown": "An unknown error occurred.",
+      "noImage": "No image was generated. The model might have refused the request.",
+      "upscaleFailed": "Upscaling failed. The model did not return an image.",
+      "colorCorrectFailed": "Color correction failed. The model did not return an image."
+    }
+  }
+}
