@@ -17,7 +17,9 @@ const getErrorMessage = (error: unknown): string => {
     message.includes('invalid authentication') ||
     message.includes('entity was not found')
   ) {
-    return "Google AI Studio is not connected. Please click the 'Connect AI Studio' button in the top right corner to link your API key.";
+    // Dispatch a global event to trigger the connection UI in App.tsx
+    window.dispatchEvent(new CustomEvent('trigger-key-selection'));
+    return "Google AI Studio is not connected or the key is invalid. Please link your API key using the 'Connect AI Studio' button in the top right corner.";
   }
   
   if (message.includes('429')) {
@@ -84,6 +86,7 @@ Replace the background of the product image. The product must remain 100% identi
 
 export const processImageWithGemini = async (file: File, options: CustomizationOptions, niche: string, atmosphereFiles: File[], logoFile: File | null): Promise<string> => {
   try {
+    // Create fresh instance right before call as per selection requirements
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const prompt = buildPrompt(options, niche, atmosphereFiles.length > 0, !!logoFile);
     

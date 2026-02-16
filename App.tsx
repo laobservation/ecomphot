@@ -30,17 +30,27 @@ const App: React.FC = () => {
   const [hasApiKey, setHasApiKey] = useState(false);
 
   // Check for API Key on mount
+  const checkKeyStatus = useCallback(async () => {
+    if ((window as any).aistudio?.hasSelectedApiKey) {
+      const hasKey = await (window as any).aistudio.hasSelectedApiKey();
+      setHasApiKey(hasKey);
+    } else {
+      // Fallback for environments without the helper
+      setHasApiKey(!!process.env.API_KEY && process.env.API_KEY !== 'undefined');
+    }
+  }, []);
+
   useEffect(() => {
-    const checkKey = async () => {
-      if ((window as any).aistudio?.hasSelectedApiKey) {
-        const hasKey = await (window as any).aistudio.hasSelectedApiKey();
-        setHasApiKey(hasKey);
-      } else {
-        // Fallback for environments without the helper
-        setHasApiKey(!!process.env.API_KEY);
-      }
+    checkKeyStatus();
+  }, [checkKeyStatus]);
+
+  // Handle automatic re-authentication if service fails
+  useEffect(() => {
+    const handleReauth = () => {
+      handleConnectApiKey();
     };
-    checkKey();
+    window.addEventListener('trigger-key-selection', handleReauth);
+    return () => window.removeEventListener('trigger-key-selection', handleReauth);
   }, []);
 
   const [theme, setTheme] = useState<Theme>(() => {
@@ -87,6 +97,8 @@ const App: React.FC = () => {
       await (window as any).aistudio.openSelectKey();
       // Assume success to avoid race condition as per instructions
       setHasApiKey(true);
+      // Re-verify after a short delay
+      setTimeout(checkKeyStatus, 2000);
     }
   };
 
