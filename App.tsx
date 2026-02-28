@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Header } from './components/Header';
 import { PhotoStudio } from './components/PhotoStudio';
-import { VideoStudio } from './components/VideoStudio';
-import { ModeSwitcher } from './components/ModeSwitcher';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
-import { UploadIcon, CameraIcon, SparklesIcon } from './components/Icons';
+import { UploadIcon, CameraIcon, SparklesIcon, RefreshIcon } from './components/Icons';
 import { Theme } from './types';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
+import { LandingPage } from './components/LandingPage';
+import { MarketingAnglesStudio } from './components/MarketingAnglesStudio';
 
 interface UserProfile {
   name: string;
@@ -25,7 +25,7 @@ const App: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const dragCounter = useRef(0);
   const [selectedNiche, setSelectedNiche] = useState('furniture');
-  const [mode, setMode] = useState<'photo' | 'video'>('photo');
+  const [currentView, setCurrentView] = useState<'landing' | 'studio' | 'marketing'>('landing');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [hasApiKey, setHasApiKey] = useState(false);
 
@@ -36,7 +36,8 @@ const App: React.FC = () => {
       setHasApiKey(hasKey);
     } else {
       // Fallback for environments without the helper
-      setHasApiKey(!!process.env.API_KEY && process.env.API_KEY !== 'undefined');
+      const key = process.env.API_KEY || process.env.GEMINI_API_KEY || (window as any).process?.env?.API_KEY || (window as any).process?.env?.GEMINI_API_KEY;
+      setHasApiKey(!!key && key !== 'undefined' && key !== '');
     }
   }, []);
 
@@ -44,14 +45,26 @@ const App: React.FC = () => {
     checkKeyStatus();
   }, [checkKeyStatus]);
 
+  const handleConnectApiKey = useCallback(async () => {
+    if ((window as any).aistudio?.openSelectKey) {
+      setHasApiKey(false);
+      await (window as any).aistudio.openSelectKey();
+      // Assume success to avoid race condition as per instructions
+      setHasApiKey(true);
+      // Re-verify after a short delay
+      setTimeout(checkKeyStatus, 2000);
+    }
+  }, [checkKeyStatus]);
+
   // Handle automatic re-authentication if service fails
   useEffect(() => {
     const handleReauth = () => {
+      setHasApiKey(false);
       handleConnectApiKey();
     };
     window.addEventListener('trigger-key-selection', handleReauth);
     return () => window.removeEventListener('trigger-key-selection', handleReauth);
-  }, []);
+  }, [handleConnectApiKey]);
 
   const [theme, setTheme] = useState<Theme>(() => {
     return (localStorage.getItem('theme') as Theme) || 'system';
@@ -92,15 +105,6 @@ const App: React.FC = () => {
     }, 800);
   };
 
-  const handleConnectApiKey = async () => {
-    if ((window as any).aistudio?.openSelectKey) {
-      await (window as any).aistudio.openSelectKey();
-      // Assume success to avoid race condition as per instructions
-      setHasApiKey(true);
-      // Re-verify after a short delay
-      setTimeout(checkKeyStatus, 2000);
-    }
-  };
 
   const handleLogout = () => {
     setUser(null);
@@ -194,16 +198,25 @@ const App: React.FC = () => {
                  <button onClick={handleLogout} className="text-[10px] text-gray-500 hover:text-red-500 uppercase tracking-widest font-bold mt-1 transition-colors">Sign Out</button>
                </div>
              </div>
+             {currentView !== 'landing' && (
+               <button 
+                 onClick={() => setCurrentView('landing')}
+                 className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors"
+               >
+                 <RefreshIcon className="w-3.5 h-3.5 rotate-180" />
+                 Back to Hub
+               </button>
+             )}
           </div>
           
           <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-end">
             {!hasApiKey && (
               <button 
                 onClick={handleConnectApiKey}
-                className="flex items-center gap-2 px-4 py-2 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl border border-amber-200 dark:border-amber-800 hover:bg-amber-200 transition-all shadow-sm animate-pulse"
+                className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 dark:shadow-none animate-pulse ring-4 ring-indigo-500/20"
               >
                 <SparklesIcon className="w-4 h-4" />
-                Connect AI Studio
+                Connect AI Studio (Required for 1K)
               </button>
             )}
             <LanguageSwitcher />
@@ -212,13 +225,18 @@ const App: React.FC = () => {
         </div>
         
         <main className="max-w-7xl mx-auto">
-          <Header />
-          <ModeSwitcher mode={mode} setMode={setMode} />
-          
-          {mode === 'photo' ? (
-            <PhotoStudio selectedNiche={selectedNiche} setSelectedNiche={setSelectedNiche} />
+          {currentView === 'landing' ? (
+            <LandingPage onSelectTool={(id) => {
+              if (id === 'atmosphere-generator') setCurrentView('studio');
+              if (id === 'marketing-angles') setCurrentView('marketing');
+            }} />
+          ) : currentView === 'marketing' ? (
+            <MarketingAnglesStudio />
           ) : (
-            <VideoStudio />
+            <>
+              <Header title="Product Atmosphere Generator" />
+              <PhotoStudio selectedNiche={selectedNiche} setSelectedNiche={setSelectedNiche} />
+            </>
           )}
         </main>
 

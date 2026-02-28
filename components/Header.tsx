@@ -2,7 +2,12 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { CameraIcon } from './Icons';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  title?: string;
+  subtitle?: string;
+}
+
+export const Header: React.FC<HeaderProps> = ({ title, subtitle }) => {
   const { t } = useTranslation();
 
   return (
@@ -11,10 +16,10 @@ export const Header: React.FC = () => {
         <CameraIcon className="w-8 h-8 md:w-10 md:h-10" />
       </div>
       <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 dark:text-slate-100 leading-tight">
-        {t('header.title')}
+        {title || t('header.title')}
       </h1>
       <p className="mt-4 text-base md:text-lg text-gray-600 dark:text-slate-400 max-w-2xl mx-auto px-4">
-        {t('header.subtitle')}
+        {subtitle || t('header.subtitle')}
       </p>
     </header>
   );
